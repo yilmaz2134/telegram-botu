@@ -9,9 +9,21 @@ import yt_dlp
 import re
 import time
 import imageio_ffmpeg
+from flask import Flask
+import threading
 
 TOKEN = "7929116701:AAGSkYeqfVV5ZlcLFU24diufgA8qOsrgZoo"
 bot = telebot.TeleBot(TOKEN)
+
+# Flask Web Sunucusu (Bulutta 7/24 uyanık kalmak için)
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Siber OSINT Botu 7/24 Aktif Olarak Çalışıyor!"
+
+def run_flask():
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 8080)))
 
 # Global değişkenler
 user_files = {}
@@ -308,5 +320,10 @@ def handle_unknown_text(message):
     bot.send_message(message.chat.id, "⚠️ <b>Yanlış Kullanım!</b>\n\nLütfen işlem yapmak için bir komut kullanın veya doğrudan link/resim gönderin.\nİsim taramak için: <code>/isim hedefine_yaz</code>", parse_mode="HTML")
 
 if __name__ == "__main__":
-    print("🕵️‍♂️ OSINT Botu başlatıldı ve hedefleri bekliyor...")
+    # Flask sunucusunu arka planda başlat (Bulut uyku modunu engellemek için)
+    flask_thread = threading.Thread(target=run_flask)
+    flask_thread.daemon = True
+    flask_thread.start()
+    
+    print("🕵️‍♂️ OSINT Botu Bulut Uyumlu Olarak Başlatıldı...")
     bot.infinity_polling()

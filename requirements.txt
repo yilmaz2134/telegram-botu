@@ -5,3 +5,4 @@ aiohttp
 yt-dlp
 imageio-ffmpeg
 Pillow
+Flask
