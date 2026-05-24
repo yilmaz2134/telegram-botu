@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+authorized_users.txt
+temp_downloads_*
+.env
